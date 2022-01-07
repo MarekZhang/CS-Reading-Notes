@@ -8,7 +8,7 @@
         {list.map(function(item, key) { return (
             <div key={key}>
               ...
-        </div> );
+            </div> );
         })}
         ```
         
@@ -70,14 +70,13 @@
 - **Event Handler**
     
     ```jsx
-    <button onClick={this.onDismiss(item.objectID)} type="button"
-    >
+    <button onClick={this.onDismiss(item.objectID)} type="button">
     	Dismiss
     </button>
     ```
     
-    - the `onDismiss()` would execute immediately when you open the application in your browser. The expression in the handler is **evaluated(get the return value of onDismiss)**
-    - using `onClick={this.onDismiss}` can avoid being evaluated, but cannot input params
+    - the `onDismiss()` would execute immediately when you open the application in your browser. The expression in the handler is **evaluated**
+    - using `onClick={this.onDismiss}` can avoid being evaluated, but we cannot input params
 - **Interactions with Forms and Events**
     - React's `this.setState()` is a shallow merge, it preserves the sibling. properties in the state object when updating one sole property in it.
 - **controlled components**
@@ -89,11 +88,10 @@
             return (
               <div className="App">
                 <form>
-        					<input type="text" 
-        						value={searchTerm} onChange={this.onSearchChange /> 
-        				</form>
-        				...
-        			</div>); 
+                    <input type="text" value={searchTerm} onChange={this.onSearchChange /> 
+                </form>
+                ...
+            </div>); 
         }
         ```
         
