@@ -1,7 +1,7 @@
 # The Road to learn React
 
 - JS in JSX
-    - don't make the mistake of using index of the item in the array;  when. the list changes its order, React will have a hard time to identify the items properly
+    - don’t make the mistake of using index of the item in the array; when. the list changes its order, React will have a hard time to identify the items properly
         
         ```jsx
         // don't do this
@@ -30,7 +30,7 @@
           const listItems = numbers.map((number) =>
             // Wrong! The key should have been specified here:
             <ListItem value={number} />
-        		// Correct! Key should be specified inside the array.
+                // Correct! Key should be specified inside the array.
             <ListItem key={number.toString()} value={number} />
           );
           return (
@@ -49,36 +49,36 @@
     
     ```jsx
     // ES5
-    var userService = { 
-    	getUserName: function (user) {
-    		return user.firstname + ' ' + user.lastname; 
-    	},
+    var userService = {
+        getUserName: function (user) {
+            return user.firstname + ' ' + user.lastname;
+        },
     };
     // ES6
-    const userService = { 
-    	getUserName(user) {
-    		return user.firstname + ' ' + user.lastname; 
-    	},
+    const userService = {
+        getUserName(user) {
+            return user.firstname + ' ' + user.lastname;
+        },
     };
     ```
     
-- JS `filter` function doesn't mutate the old list, it returns a new one
+- JS `filter` function doesn’t mutate the old list, it returns a new one
 
 ### Bindings
 
 - avoid bind this in `render()`, it would bind multiple times whenever components update
 - **Event Handler**
     
-    ```jsx
+    ```
     <button onClick={this.onDismiss(item.objectID)} type="button">
-    	Dismiss
+        Dismiss
     </button>
     ```
     
     - the `onDismiss()` would execute immediately when you open the application in your browser. The expression in the handler is **evaluated**
     - using `onClick={this.onDismiss}` can avoid being evaluated, but we cannot input params
 - **Interactions with Forms and Events**
-    - React's `this.setState()` is a shallow merge, it preserves the sibling. properties in the state object when updating one sole property in it.
+    - React’s `this.setState()` is a shallow merge, it preserves the sibling. properties in the state object when updating one sole property in it.
 - **controlled components**
     - `<input>` `<textarea>` `<select>` hold their own state in plain HTML — **uncontrolled component**, in React, you should make sure to make those elements **controlled components**
         
@@ -88,15 +88,15 @@
             return (
               <div className="App">
                 <form>
-                    <input type="text" value={searchTerm} onChange={this.onSearchChange /> 
+                    <input type="text" value={searchTerm} onChange={this.onSearchChange />
                 </form>
                 ...
-            </div>); 
+            </div>);
         }
         ```
         
 - **Component Declarations**
-    - **Functional Stateless Components:** don't have lifecycle methods
+    - **Functional Stateless Components:** don’t have lifecycle methods
     - A rule of thumb is to use functional stateless components when you don’t need local state or component lifecycle methods
         
         ```jsx
@@ -111,7 +111,7 @@
 
 ### Getting Real with an API
 
-- **LifeCycle Methods**
+- **LifeCycle Methods**[ReactJS: Why is the convention to fetch data on componentDidMount?](https://stackoverflow.com/questions/39338464/reactjs-why-is-the-convention-to-fetch-data-on-componentdidmount)
     - `constructor()` ⇒ `componentWillMount()` ⇒ `render()` ⇒ `componentDidMount()`
     - update lifecycle:
         
@@ -121,5 +121,36 @@
         
         `componentWillUnmount()`
         
+- ES6 Spread Operators
     
-    [ReactJS: Why is the convention to fetch data on componentDidMount?](https://stackoverflow.com/questions/39338464/reactjs-why-is-the-convention-to-fetch-data-on-componentdidmount)
+    ```jsx
+    // use Object.assign() to update
+    onDismiss(id) {
+      const isNotId = item => item.objectID !== id;
+      const updatedHits = this.state.result.hits.filter(isNotId);
+      this.setState({
+        result: Object.assign({}, this.state.result, { hits: updatedHits })
+    	}); 
+    }
+    
+    // use ES6 spread operator
+    onDismiss(id) {
+      const isNotId = item => item.objectID !== id;
+      const updatedHits = this.state.result.hits.filter(isNotId);
+      this.setState({
+        result: { ...this.state.result, hits: updatedHits }
+    	}); 
+    }
+    ```
+    
+- Conditional Rendering
+    
+    ```jsx
+    { result ? <Table list={result.hits} pattern={searchTerm}
+                onDismiss={this.onDismiss}/> : null }
+    ```
+    
+    ```jsx
+    { result && <Table list={result.hits} pattern={searchTerm} 
+    						 onDismiss={this.onDismiss}/> }
+    ```
