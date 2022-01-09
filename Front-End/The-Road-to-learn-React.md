@@ -154,3 +154,49 @@
     { result && <Table list={result.hits} pattern={searchTerm} 
     						 onDismiss={this.onDismiss}/> }
     ```
+    
+- **Error Handling**
+    - Error Handling: local state and conditional rendering. Basically the error is only **another state** in React
+- **Axios instead of fetch**
+    - prevent setting state on unmounted component
+        - request in `componentDidMount()` is not completed when navigating to a new page. It will attempt to use `this.setState()` eventually in the `then()` or `catch()` promise. And. you will see the warning
+            
+            ```jsx
+            Warning: Can only update a mounted or mounting component. This usually means you\
+             called setState, replaceState, or forceUpdate on an unmounted component. This i\
+            s a no-op.
+            ```
+            
+        - Introduce a class field which holds the lifecycle state of your component
+            
+            ```jsx
+            class App extends Component {
+              _isMounted = false;
+              constructor(props) {
+                ...
+            	}
+            
+            	componentDidMount() {
+                this._isMounted = true;
+                const { searchTerm } = this.state;
+                this.setState({ searchKey: searchTerm });
+                this.fetchSearchTopStories(searchTerm);
+            	}
+            
+            	componentWillUnmount() {
+                this._isMounted = false;
+            	}
+            
+            	fetchSearchTopStories(searchTerm, page = 0) {
+                axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}\
+            ${page}&${PARAM_HPP}${DEFAULT_HPP}`)
+                  .then(result => this._isMounted && this.setSearchTopStories(result.data))
+                  .catch(error => this._isMounted && this.setState({ error }));
+            	}
+            }
+            ```
+            
+
+### Code organization and Testing
+
+-
