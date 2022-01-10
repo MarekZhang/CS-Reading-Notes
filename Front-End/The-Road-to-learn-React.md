@@ -199,4 +199,20 @@
 
 ### Code organization and Testing
 
--
+- as many as unit tests; a few end-to-end tests to simulate critical scenarios
+
+### Higher-order Component
+
+- **HOCs** are an equivalent to **higher-order functions**. They take any input - most of the time a component, but also optional arguments - and return a component as output.
+    
+    ```jsx
+    function withFoo(Component) { 
+    	return function(props) {
+    		return <Component { ...props } />; 
+    	}
+    }
+    
+    const withFoo = (Component) => (props) => <Component {...props} />
+    ```
+    
+- use cases: prepare properties; manage state or. alter the representation of a component
